@@ -1,5 +1,8 @@
 import org.jetbrains.compose.ExperimentalComposeLibrary
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
+import java.util.*
+import java.util.*
+import java.util.*
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
@@ -21,6 +24,7 @@ kotlin {
         binaries.executable()
     }*/
 
+
     androidTarget {
         compilations.all {
             kotlinOptions {
@@ -31,10 +35,17 @@ kotlin {
 
     jvm("desktop")
 
-    js {
-        browser()
+    js(IR) {
+        moduleName = "composeApp"
+        browser {
+            commonWebpackConfig {
+                outputFileName = "composeApp.js"
+            }
+        }
         binaries.executable()
     }
+    val localProps = Properties()
+    val localPropsFile = localProps.load(project.rootProject.file("local.properties").inputStream())
 
     sourceSets {
         val desktopMain by getting
@@ -71,11 +82,14 @@ kotlin {
             implementation("dev.icerock.moko:mvvm-flow-compose:0.16.1")
             implementation("com.google.android.material:material:1.5.0")
 
+
         }
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
             implementation(compose.desktop.common)
             implementation(libs.ktor.client.okhttp)
+            implementation(libs.kotlinx.coroutines.core)
+
         }
 
         jsMain.dependencies {
@@ -140,7 +154,3 @@ compose.desktop {
 compose.experimental {
     web.application {}
 }
-
-/*tasks.getByPath("jvmProcessResources").dependsOn("libresGenerateResources")
-tasks.getByPath("jvmSourcesJar").dependsOn("libresGenerateResources")
-tasks.getByPath("jsProcessResources").dependsOn("libresGenerateResources")*/
