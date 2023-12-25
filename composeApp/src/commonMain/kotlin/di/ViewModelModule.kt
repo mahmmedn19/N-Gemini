@@ -1,7 +1,7 @@
 package di
 
-import com.monaser.ngemini.ui.screens.ChatViewModel
 import org.koin.dsl.module
+import ui.screens.ChatViewModel
 
 val viewModelModule = module {
     single { ChatViewModel(get()) }

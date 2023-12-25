@@ -1,11 +1,9 @@
 package data.models
 
-import org.jetbrains.skia.Bitmap
-
 
 data class ChatMessage(
     val text: String,
-    val image: Bitmap? = null,
+    val image: String? = null,
     val role: String = Role.USER.roleName,
 ) {
     val isModel: Boolean

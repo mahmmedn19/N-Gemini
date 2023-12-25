@@ -1,3 +1,7 @@
+@file:OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
+
+import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
+import com.codingfeline.buildkonfig.compiler.FieldSpec.Type.STRING
 import org.jetbrains.compose.ExperimentalComposeLibrary
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 
@@ -7,6 +11,7 @@ plugins {
     alias(libs.plugins.jetbrainsCompose)
     alias(libs.plugins.buildConfig)
     alias(libs.plugins.kotlinx.serialization)
+    id("com.codingfeline.buildkonfig")
 }
 
 kotlin {
@@ -21,6 +26,7 @@ kotlin {
         binaries.executable()
     }*/
 
+
     androidTarget {
         compilations.all {
             kotlinOptions {
@@ -31,10 +37,16 @@ kotlin {
 
     jvm("desktop")
 
-    js {
-        browser()
+    js(IR) {
+        moduleName = "composeApp"
+        browser {
+            commonWebpackConfig {
+                outputFileName = "composeApp.js"
+            }
+        }
         binaries.executable()
     }
+
 
     sourceSets {
         val desktopMain by getting
@@ -45,9 +57,9 @@ kotlin {
             implementation(libs.kotlinx.coroutines.android)
             implementation(libs.ktor.client.okhttp)
             implementation(libs.ktor.core)
-            implementation("io.insert-koin:koin-androidx-compose:3.4.4")
-            implementation("io.insert-koin:koin-android:3.5.0")
-
+            implementation(libs.koin.androidx.compose)
+            implementation(libs.koin.android)
+            implementation(libs.kstore.file)
 
         }
         commonMain.dependencies {
@@ -68,14 +80,24 @@ kotlin {
             implementation(libs.composeIcons.featherIcons)
             implementation(libs.com.google.code.gson)
             implementation(libs.moko.mvvm)
-            implementation("dev.icerock.moko:mvvm-flow-compose:0.16.1")
-            implementation("com.google.android.material:material:1.5.0")
+            implementation(libs.mvvm.flow.compose)
+            implementation(libs.material.v150)
+            implementation(libs.kstore)
 
         }
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
             implementation(compose.desktop.common)
             implementation(libs.ktor.client.okhttp)
+            implementation(libs.kotlinx.coroutines.core)
+            // Toaster for Windows
+            implementation(libs.toast4j)
+
+            implementation("de.jangassen:jfa:1.2.0") {
+
+                exclude(group = "net.java.dev.jna", module = "jna")
+            }
+            implementation(libs.kstore.file)
         }
 
         jsMain.dependencies {
@@ -140,7 +162,16 @@ compose.desktop {
 compose.experimental {
     web.application {}
 }
+buildkonfig {
+    packageName = "org.monaser.project"
 
-/*tasks.getByPath("jvmProcessResources").dependsOn("libresGenerateResources")
-tasks.getByPath("jvmSourcesJar").dependsOn("libresGenerateResources")
-tasks.getByPath("jsProcessResources").dependsOn("libresGenerateResources")*/
+    defaultConfigs {
+        val apiKey: String = gradleLocalProperties(rootDir).getProperty("NGEMINI_API_KEY")
+
+        require(apiKey.isNotEmpty()) {
+            "Register your api key from developer.nytimes.com and place it in local.properties as `apiKey`"
+        }
+
+        buildConfigField(STRING, "NGEMINI_API_KEY", apiKey)
+    }
+}

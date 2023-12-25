@@ -1,3 +1,5 @@
+package org.monaser.project
+
 import org.koin.core.context.startKoin
 import android.app.Application
 import di.appModule

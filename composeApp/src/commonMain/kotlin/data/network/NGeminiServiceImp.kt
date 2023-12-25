@@ -1,6 +1,5 @@
 package data.network
 
-import com.monaser.ngemini.BuildConfig
 import data.models.NGeminiResponseDto
 import io.ktor.client.HttpClient
 import io.ktor.client.request.header
@@ -13,13 +12,13 @@ import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.Json.Default.decodeFromString
 
-
 class NGeminiServiceImp(
     private val client: HttpClient
 ) : NGeminiService {
+
     private val BASE_URL = "https://generativelanguage.googleapis.com"
-    private val GEMINI_PRO =
-        "$BASE_URL/v1beta/models/gemini-pro:generateContent?key=${BuildConfig.NGEMINI_API_KEY}"
+/*    private val NGEMINI_API_KEY = BuildKonfig.NGEMINI_API_KEY*/
+    private val GEMINI_PRO = "$BASE_URL/v1beta/models/gemini-pro:generateContent?key=${NGEMINI_API_KEY}"
 
     @OptIn(InternalAPI::class)
     override suspend fun generateContent(content: String): NGeminiResponseDto {
@@ -47,7 +46,7 @@ class NGeminiServiceImp(
     @OptIn(InternalAPI::class)
     override suspend fun generateContentWithImage(content: String, image: String): NGeminiResponseDto {
         val url =
-            "$BASE_URL/v1beta/models/gemini-pro:generateContent?key=${BuildConfig.NGEMINI_API_KEY}"
+            "$BASE_URL/v1beta/models/gemini-pro:generateContent?key=${NGEMINI_API_KEY}"
         val requestBody = mapOf(
             "contents" to listOf(
                 mapOf("parts" to listOf(mapOf("text" to content))),

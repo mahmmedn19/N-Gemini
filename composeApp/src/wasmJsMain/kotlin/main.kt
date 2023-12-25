@@ -1,7 +1,11 @@
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.window.CanvasBasedWindow
+import org.jetbrains.skiko.wasm.onWasmReady
 
 @OptIn(ExperimentalComposeUiApi::class)
 fun main() {
-    CanvasBasedWindow(canvasElementId = "ComposeTarget") { App() }
+    initKoin()
+    onWasmReady {
+        CanvasBasedWindow(canvasElementId = "NGemini") { App() }
+    }
 }

@@ -1,6 +1,5 @@
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
@@ -16,21 +15,13 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import domain.models.NGemini
 import kotlinx.coroutines.delay
-import org.jetbrains.compose.resources.ExperimentalResourceApi
+import org.koin.mp.KoinPlatform.getKoin
 import ui.screens.ChatViewModel
-import dev.icerock.moko.mvvm.viewmodel.ViewModel
 
-@OptIn(ExperimentalResourceApi::class)
 @Composable
 fun App() {
     MaterialTheme {
-        val viewModel: ChatViewModel by viewModel()
-        val viewModels by inject<ChatViewModel>()
-
-        /*
-                val contentViewModel = getViewModel<ChatViewModel>()
-        */
-
+        val contentViewModel: ChatViewModel = getKoin().get()
         ContentScreen(contentViewModel)
 
     }
@@ -181,4 +172,3 @@ fun GptTextAnimation(text: String) {
         text = animatedText,
     )
 }
-
