@@ -25,6 +25,7 @@ composeIcons = "1.1.0"
 kotlinx-serialization = "1.6.2"
 koin = "3.5.0"
 gson = "2.10.1"
+moko-mvvm = "0.16.1"
 
 
 [libraries]
@@ -58,6 +59,7 @@ ktor-client-content-negotiation = { module = "io.ktor:ktor-client-content-negoti
 composeIcons-featherIcons = { module = "br.com.devsrsouza.compose.icons:feather", version.ref = "composeIcons" }
 koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }
 com-google-code-gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
+moko-mvvm = { module = "dev.icerock.moko:mvvm-compose", version.ref = "moko-mvvm" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

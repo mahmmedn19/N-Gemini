@@ -45,6 +45,8 @@ kotlin {
             implementation(libs.kotlinx.coroutines.android)
             implementation(libs.ktor.client.okhttp)
             implementation(libs.ktor.core)
+            implementation("io.insert-koin:koin-androidx-compose:3.4.4")
+            implementation("io.insert-koin:koin-android:3.5.0")
 
 
         }
@@ -65,6 +67,9 @@ kotlin {
             implementation(libs.koin.core)
             implementation(libs.composeIcons.featherIcons)
             implementation(libs.com.google.code.gson)
+            implementation(libs.moko.mvvm)
+            implementation("dev.icerock.moko:mvvm-flow-compose:0.16.1")
+            implementation("com.google.android.material:material:1.5.0")
 
         }
         desktopMain.dependencies {
@@ -118,6 +123,7 @@ android {
         kotlinCompilerExtensionVersion = "1.5.4"
     }
 }
+
 
 compose.desktop {
     application {
