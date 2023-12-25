@@ -1,5 +1,5 @@
 [versions]
-agp = "8.2.0"
+agp = "8.2.0-beta05"
 android-compileSdk = "34"
 android-minSdk = "24"
 android-targetSdk = "34"
@@ -10,11 +10,11 @@ androidx-core-ktx = "1.12.0"
 androidx-espresso-core = "3.5.1"
 androidx-material = "1.10.0"
 androidx-test-junit = "1.1.5"
-compose = "1.5.4"
+compose = "1.5.4-dev1-kt2.0.0-Beta1"
 compose-compiler = "1.5.6"
 compose-plugin = "1.6.0-alpha01"
 junit = "4.13.2"
-kotlin = "1.9.21"
+kotlin = "2.0.0-Beta1"
 voyager = "1.0.0"
 composeImageLoader = "1.7.1"
 napier = "2.6.1"
@@ -24,6 +24,8 @@ ktor = "2.3.7"
 composeIcons = "1.1.0"
 kotlinx-serialization = "1.6.2"
 koin = "3.5.0"
+gson = "2.10.1"
+
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
@@ -55,7 +57,7 @@ io-ktor-ktor-client-serialization = { module = "io.ktor:ktor-serialization-kotli
 ktor-client-content-negotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktor" }
 composeIcons-featherIcons = { module = "br.com.devsrsouza.compose.icons:feather", version.ref = "composeIcons" }
 koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }
-
+com-google-code-gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

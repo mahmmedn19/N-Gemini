@@ -1,6 +1,5 @@
 import org.jetbrains.compose.ExperimentalComposeLibrary
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
-import org.jetbrains.kotlin.gradle.targets.js.dsl.ExperimentalWasmDsl
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
@@ -11,7 +10,7 @@ plugins {
 }
 
 kotlin {
-    @OptIn(ExperimentalWasmDsl::class)
+/*    @OptIn(ExperimentalWasmDsl::class)
     wasmJs {
         moduleName = "composeApp"
         browser {
@@ -20,8 +19,8 @@ kotlin {
             }
         }
         binaries.executable()
-    }
-    
+    }*/
+
     androidTarget {
         compilations.all {
             kotlinOptions {
@@ -29,12 +28,17 @@ kotlin {
             }
         }
     }
-    
+
     jvm("desktop")
-    
+
+    js {
+        browser()
+        binaries.executable()
+    }
+
     sourceSets {
         val desktopMain by getting
-        
+
         androidMain.dependencies {
             implementation(libs.compose.ui.tooling.preview)
             implementation(libs.androidx.activity.compose)
@@ -52,8 +56,15 @@ kotlin {
             @OptIn(ExperimentalComposeLibrary::class)
             implementation(compose.components.resources)
             implementation(compose.materialIconsExtended)
-
-
+            implementation(libs.ktor.core)
+            implementation(libs.kotlinx.coroutines.core)
+            implementation(libs.ktor.client.content.negotiation)
+            implementation(libs.ktor.client.logging)
+            implementation(libs.io.ktor.ktor.client.serialization)
+            implementation(libs.kotlinx.serialization.json)
+            implementation(libs.koin.core)
+            implementation(libs.composeIcons.featherIcons)
+            implementation(libs.com.google.code.gson)
 
         }
         desktopMain.dependencies {
@@ -61,9 +72,10 @@ kotlin {
             implementation(compose.desktop.common)
             implementation(libs.ktor.client.okhttp)
         }
-/*        wasmJsMain.dependencies {
+
+        jsMain.dependencies {
             implementation(compose.html.core)
-        }*/
+        }
     }
 }
 
@@ -123,7 +135,6 @@ compose.experimental {
     web.application {}
 }
 
-/*
-tasks.getByPath("jvmProcessResources").dependsOn("libresGenerateResources")
+/*tasks.getByPath("jvmProcessResources").dependsOn("libresGenerateResources")
 tasks.getByPath("jvmSourcesJar").dependsOn("libresGenerateResources")
 tasks.getByPath("jsProcessResources").dependsOn("libresGenerateResources")*/
