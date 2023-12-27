@@ -12,6 +12,7 @@ import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.Json.Default.decodeFromString
 
+
 class NGeminiServiceImp(
     private val client: HttpClient
 ) : NGeminiService {
