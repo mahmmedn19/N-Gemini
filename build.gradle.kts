@@ -5,4 +5,16 @@ plugins {
     alias(libs.plugins.androidLibrary) apply false
     alias(libs.plugins.jetbrainsCompose) apply false
     alias(libs.plugins.kotlinMultiplatform) apply false
+    alias(libs.plugins.jvm) apply false
+}
+buildscript {
+    repositories {
+        mavenCentral()
+        gradlePluginPortal()
+        google()
+    }
+
+    dependencies {
+        classpath(libs.buildkonfig.gradle.plugin)
+    }
 }

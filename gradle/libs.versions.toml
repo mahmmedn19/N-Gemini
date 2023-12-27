@@ -1,5 +1,5 @@
 [versions]
-agp = "8.2.0-beta05"
+agp = "8.2.0"
 android-compileSdk = "34"
 android-minSdk = "24"
 android-targetSdk = "34"
@@ -10,11 +10,13 @@ androidx-core-ktx = "1.12.0"
 androidx-espresso-core = "3.5.1"
 androidx-material = "1.10.0"
 androidx-test-junit = "1.1.5"
-compose = "1.5.4-dev1-kt2.0.0-Beta1"
+compose = "1.5.4"
 compose-compiler = "1.5.6"
 compose-plugin = "1.6.0-alpha01"
 junit = "4.13.2"
+koinAndroidxCompose = "3.4.4"
 kotlin = "2.0.0-Beta1"
+material = "1.5.0"
 voyager = "1.0.0"
 composeImageLoader = "1.7.1"
 napier = "2.6.1"
@@ -25,9 +27,14 @@ composeIcons = "1.1.0"
 kotlinx-serialization = "1.6.2"
 koin = "3.5.0"
 gson = "2.10.1"
-
+moko-mvvm = "0.16.1"
+toast4j = "0.2.0"
+buildkonfig = "0.13.3"
+kstore = "0.7.1"
 
 [libraries]
+koin-android = { module = "io.insert-koin:koin-android", version.ref = "koin" }
+koin-androidx-compose = { module = "io.insert-koin:koin-androidx-compose", version.ref = "koinAndroidxCompose" }
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
 kotlin-test-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "kotlin" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -43,6 +50,8 @@ compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = 
 compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview", version.ref = "compose" }
 compose-foundation = { module = "androidx.compose.foundation:foundation", version.ref = "compose" }
 compose-material = { module = "androidx.compose.material:material", version.ref = "compose" }
+material-v150 = { module = "com.google.android.material:material", version.ref = "material" }
+mvvm-flow-compose = { module = "dev.icerock.moko:mvvm-flow-compose", version.ref = "moko-mvvm" }
 voyager-navigator = { module = "cafe.adriel.voyager:voyager-navigator", version.ref = "voyager" }
 composeImageLoader = { module = "io.github.qdsfdhvh:image-loader", version.ref = "composeImageLoader" }
 napier = { module = "io.github.aakira:napier", version.ref = "napier" }
@@ -58,6 +67,13 @@ ktor-client-content-negotiation = { module = "io.ktor:ktor-client-content-negoti
 composeIcons-featherIcons = { module = "br.com.devsrsouza.compose.icons:feather", version.ref = "composeIcons" }
 koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }
 com-google-code-gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
+moko-mvvm = { module = "dev.icerock.moko:mvvm-compose", version.ref = "moko-mvvm" }
+toast4j = { module = "de.mobanisto:toast4j", version.ref = "toast4j" }
+buildkonfig-gradle-plugin = { module = "com.codingfeline.buildkonfig:buildkonfig-gradle-plugin", version.ref = "buildkonfig" }
+kstore = { module = "io.github.xxfast:kstore", version.ref = "kstore" }
+kstore-file = { module = "io.github.xxfast:kstore-file", version.ref = "kstore" }
+kstore-storage = { module = "io.github.xxfast:kstore-storage", version.ref = "kstore" }
+
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
@@ -66,3 +82,4 @@ jetbrainsCompose = { id = "org.jetbrains.compose", version.ref = "compose-plugin
 kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 buildConfig = { id = "com.github.gmazzo.buildconfig", version.ref = "buildConfig" }
 kotlinx-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
