@@ -1,7 +1,6 @@
-@file:OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
+@file:OptIn(ExperimentalComposeLibrary::class)
 
-import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
-import com.codingfeline.buildkonfig.compiler.FieldSpec.Type.STRING
+
 import org.jetbrains.compose.ExperimentalComposeLibrary
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 
@@ -11,7 +10,10 @@ plugins {
     alias(libs.plugins.jetbrainsCompose)
     alias(libs.plugins.buildConfig)
     alias(libs.plugins.kotlinx.serialization)
+    id ("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
+/*
     id("com.codingfeline.buildkonfig")
+*/
 }
 
 kotlin {
@@ -140,6 +142,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.4"
@@ -162,6 +165,7 @@ compose.desktop {
 compose.experimental {
     web.application {}
 }
+/*
 buildkonfig {
     packageName = "org.monaser.project"
 
@@ -174,4 +178,4 @@ buildkonfig {
 
         buildConfigField(STRING, "NGEMINI_API_KEY", apiKey)
     }
-}
+}*/

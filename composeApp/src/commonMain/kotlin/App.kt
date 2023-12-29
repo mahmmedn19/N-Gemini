@@ -16,18 +16,18 @@ import androidx.compose.ui.unit.dp
 import domain.models.NGemini
 import kotlinx.coroutines.delay
 import org.koin.mp.KoinPlatform.getKoin
+import ui.screens.ChatScreen
 import ui.screens.ChatViewModel
 
 @Composable
 fun App() {
     MaterialTheme {
         val contentViewModel: ChatViewModel = getKoin().get()
-        ContentScreen(contentViewModel)
-
+        ChatScreen()
     }
 }
 
-@Composable
+/*@Composable
 fun ContentScreen(viewModel: ChatViewModel) {
     var contentText by remember { mutableStateOf("") }
     var isError by remember { mutableStateOf(false) }
@@ -153,22 +153,4 @@ fun ErrorResult(errorMessage: String) {
         Spacer(modifier = Modifier.width(8.dp))
         Text(text = errorMessage, color = Color.Red)
     }
-}
-
-@Composable
-fun GptTextAnimation(text: String) {
-    var animatedText by remember { mutableStateOf("") }
-    var visibleCharCount by remember { mutableStateOf(0) }
-
-    LaunchedEffect(text) {
-        while (visibleCharCount <= text.length) {
-            animatedText = text.take(visibleCharCount)
-            visibleCharCount++
-            delay(50) // Adjust this delay for the desired animation speed
-        }
-    }
-
-    Text(
-        text = animatedText,
-    )
-}
+}*/
