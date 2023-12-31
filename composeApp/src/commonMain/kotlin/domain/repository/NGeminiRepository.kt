@@ -7,5 +7,5 @@ interface NGeminiRepository {
     suspend fun generateContent(content: String): NGemini
 
 
-    suspend fun generateContentWithImage(content: String, image: String): NGemini
+    suspend fun generateContentWithImage(content: String, image: List<ByteArray>? = emptyList()): NGemini
 }

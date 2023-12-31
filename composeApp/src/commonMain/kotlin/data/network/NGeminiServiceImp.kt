@@ -1,7 +1,8 @@
 package data.network
 
 import data.models.NGeminiResponseDto
-import data.network.utils.createRequestBody
+import data.network.utils.Constant.GEMINI_PRO
+import data.network.utils.Constant.GEMINI_PRO_VISION
 import data.network.utils.fromJson
 import data.network.utils.toJson
 import io.ktor.client.HttpClient
@@ -20,13 +21,6 @@ class NGeminiServiceImp(
     private val client: HttpClient
 ) : NGeminiService {
 
-    private val BASE_URL = "https://generativelanguage.googleapis.com"
-
-    /*    private val NGEMINI_API_KEY = BuildKonfig.NGEMINI_API_KEY*/
-    private val NGEMINI_API_KEY = "AIzaSyAQ3IxPChrrr4m6dtEkrV60nAJlvb_6Uz4"
-
-    private val GEMINI_PRO =
-        "$BASE_URL/v1beta/models/gemini-pro:generateContent?key=${NGEMINI_API_KEY}"
 
     @OptIn(InternalAPI::class)
     override suspend fun generateContent(content: String): NGeminiResponseDto {
@@ -52,10 +46,17 @@ class NGeminiServiceImp(
     }
 
     @OptIn(InternalAPI::class)
-    override suspend fun generateContentWithImage(content: String, image: String?): NGeminiResponseDto {
-        val url = GEMINI_PRO
-        val requestBody = createRequestBody(content, null)
-
+    override suspend fun generateContentWithImage(
+        content: String,
+        image: List<ByteArray>?
+    ): NGeminiResponseDto {
+        val url = GEMINI_PRO_VISION
+        val requestBody = mapOf(
+            "contents" to listOf(
+                mapOf("parts" to listOf(mapOf("text" to content))),
+                mapOf("inline_data" to mapOf("mime_type" to "image/jpeg", "data" to image))
+            )
+        )
         return try {
             val responseText: String = client.post(url) {
                 header(HttpHeaders.ContentType, ContentType.Application.Json.toString())

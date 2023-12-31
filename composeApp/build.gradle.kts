@@ -10,10 +10,10 @@ plugins {
     alias(libs.plugins.jetbrainsCompose)
     alias(libs.plugins.buildConfig)
     alias(libs.plugins.kotlinx.serialization)
-    id ("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
-/*
-    id("com.codingfeline.buildkonfig")
-*/
+    id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
+    /*
+        id("com.codingfeline.buildkonfig")
+    */
 }
 
 kotlin {
@@ -62,6 +62,7 @@ kotlin {
             implementation(libs.koin.androidx.compose)
             implementation(libs.koin.android)
             implementation(libs.kstore.file)
+            implementation("androidx.activity:activity-compose:1.8.1")
 
         }
         commonMain.dependencies {
@@ -165,8 +166,9 @@ compose.desktop {
 compose.experimental {
     web.application {}
 }
-/*
-buildkonfig {
+
+
+/*buildkonfig {
     packageName = "org.monaser.project"
 
     defaultConfigs {
@@ -176,6 +178,6 @@ buildkonfig {
             "Register your api key from developer.nytimes.com and place it in local.properties as `apiKey`"
         }
 
-        buildConfigField(STRING, "NGEMINI_API_KEY", apiKey)
+        buildConfigField("NGEMINI_API_KEY", apiKey)
     }
 }*/

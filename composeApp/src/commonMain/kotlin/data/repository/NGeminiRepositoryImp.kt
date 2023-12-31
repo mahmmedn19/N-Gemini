@@ -15,7 +15,8 @@ class NGeminiRepositoryImp(
         return nGeminiService.generateContent(content).toNGemini()
     }
 
-    override suspend fun generateContentWithImage(content: String, image: String): NGemini {
+
+    override suspend fun generateContentWithImage(content: String, image: List<ByteArray>?): NGemini {
         return nGeminiService.generateContentWithImage(content, image).toNGemini()
     }
 }
