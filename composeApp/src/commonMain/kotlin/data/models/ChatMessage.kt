@@ -1,9 +1,12 @@
 package data.models
 
+import kotlinx.serialization.Serializable
 
+
+@Serializable
 data class ChatMessage(
     val text: String,
-    val image: String? = null,
+    val images: List<ByteArray> = emptyList(),
     val role: String = Role.USER.roleName,
 ) {
     val isModel: Boolean

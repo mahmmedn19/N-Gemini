@@ -4,12 +4,11 @@ import data.models.ChatMessage
 import data.models.Role
 import dev.icerock.moko.mvvm.viewmodel.ViewModel
 import domain.usecase.IGetContentUseCase
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import org.jetbrains.skia.Bitmap
-
 
 class ChatViewModel(
     private val getContentUseCase: IGetContentUseCase
@@ -17,46 +16,59 @@ class ChatViewModel(
 
     private val _chatUiState = MutableStateFlow(ChatUiState())
     val chatUiState = _chatUiState.asStateFlow()
-    private var currentUserRole: Role = Role.USER
 
-    fun generateContent(content: String, image: Bitmap? = null) {
-        viewModelScope.launch {
+    fun generateContentWithText(content: String, image: List<ByteArray>?=null) {
+        viewModelScope.launch(Dispatchers.Unconfined) {
+            addToMessages(content, emptyList(), Role.USER)
             try {
-                _chatUiState.value = ChatUiState(isLoading = true)
-
-                val nGemini = if (image != null) {
-                    getContentUseCase.getContentWithImage(content, image)
-                } else {
-                    getContentUseCase.getContentWithText(content)
-                }
-
-                val chatMessage = nGemini.candidates?.get(0)?.content?.parts?.get(0)?.text?.let {
-                    ChatMessage(
-                        it,
-                        image,
-                        currentUserRole.roleName
-                    )
-                }
-                _chatUiState.value = ChatUiState(message = listOf(chatMessage), isLoading = false)
+                _chatUiState.value =
+                    _chatUiState.value.copy(isLoading = true, isConnectionError = false)
+                val nGemini = getContentUseCase.getContentWithImage(content, image)
+                val generatedContent =
+                    nGemini.candidates?.get(0)?.content?.parts?.get(0)?.text.toString()
+                updateLastBotMessage(generatedContent)
+                addToMessages(generatedContent, emptyList(), Role.MODEL)
             } catch (e: Exception) {
-                _chatUiState.value = ChatUiState(
-                    isConnectionError = true,
-                    errorMessage = e.message,
-                    isLoading = false
-                )
+                handleContentGenerationError()
             }
         }
     }
-    private fun ChatMessage.toChatMessage(role: Role): ChatMessage {
-        // Convert the response to a ChatMessage
-        return ChatMessage(
-            text = this.text,
-            image = this.image,
-            role = role.roleName
+
+
+    private fun handleContentGenerationError() {
+        _chatUiState.value = _chatUiState.value.copy(
+            isLoading = false,
+            isConnectionError = true,
+            errorMessage = "Failed to generate content. Please try again."
         )
     }
-    fun setUserRole(role: Role) {
-        currentUserRole = role
+
+
+    private fun updateLastBotMessage(text: String) {
+        val messages = _chatUiState.value.message.toMutableList()
+        if (messages.isNotEmpty() && messages.last()?.role == Role.MODEL.roleName) {
+            val last = messages.last()
+            val updatedMessage = last?.copy(text = text)
+            messages[messages.lastIndex] = updatedMessage
+            _chatUiState.value = _chatUiState.value.copy(
+                message = messages,
+            )
+        }
+    }
+
+    private fun addToMessages(
+        text: String,
+        images: List<ByteArray>,
+        sender: Role
+    ) {
+        val newMessage = ChatMessage(text, images, sender.roleName)
+        val currentMessages = _chatUiState.value.message.toMutableList()
+
+        currentMessages.add(newMessage)
+        _chatUiState.value = _chatUiState.value.copy(
+            message = currentMessages,
+            isLoading = true
+        )
     }
 
 
