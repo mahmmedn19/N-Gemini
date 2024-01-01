@@ -1,7 +1,9 @@
 package ui.compsoable
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -15,6 +17,7 @@ import androidx.compose.material.icons.filled.Attachment
 import androidx.compose.material.icons.filled.Send
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -27,23 +30,28 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import ui.screens.ChatUiState
+import ui.util.ImagePicker
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun MessageBubble(
+fun BottomFields(
+    modifier: Modifier = Modifier.fillMaxWidth(),
+    chatUiState: ChatUiState,
     onSendClick: (String) -> Unit,
-    onAttachmentClick: () -> Unit
+    imagePicker: ImagePicker
 ) {
     var message by remember { mutableStateOf("") }
     val keyboardController = LocalSoftwareKeyboardController.current
     val focusManager = LocalFocusManager.current
+    val images = remember { mutableStateListOf<ByteArray>() }
 
     OutlinedTextField(
         value = message,
         onValueChange = {
             message = it
         },
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth(),
         keyboardOptions = KeyboardOptions.Default.copy(
             imeAction = ImeAction.Send
@@ -64,7 +72,7 @@ fun MessageBubble(
         leadingIcon = {
             Icon(
                 modifier = Modifier.size(48.dp).clickable {
-                    onAttachmentClick()
+                    imagePicker.pickImages()
                 },
                 imageVector = Icons.Default.Attachment,
                 contentDescription = "Attachment",
@@ -100,5 +108,10 @@ fun MessageBubble(
         )
 
     )
+    Spacer(modifier = Modifier.height(16.dp))
+
+    ImageList(images = images)
+
+    imagePicker.registerPicker()
 
 }

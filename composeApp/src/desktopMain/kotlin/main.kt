@@ -8,7 +8,7 @@ import java.awt.Dimension
 fun main() = application {
     initKoin()
     Window(
-        title = "Gemini AI App",
+        title = "NGemini",
         state = rememberWindowState(width = 800.dp, height = 600.dp),
         onCloseRequest = ::exitApplication,
     ) {

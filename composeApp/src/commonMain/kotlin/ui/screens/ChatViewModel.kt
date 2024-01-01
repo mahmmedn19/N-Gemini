@@ -28,6 +28,8 @@ class ChatViewModel(
                     nGemini.candidates?.get(0)?.content?.parts?.get(0)?.text.toString()
                 updateLastBotMessage(generatedContent)
                 addToMessages(generatedContent, emptyList(), Role.MODEL)
+                _chatUiState.value =
+                    _chatUiState.value.copy(isLoading = false, isConnectionError = false)
             } catch (e: Exception) {
                 handleContentGenerationError()
             }

@@ -73,6 +73,7 @@ kotlin {
             @OptIn(ExperimentalComposeLibrary::class)
             implementation(compose.components.resources)
             implementation(compose.materialIconsExtended)
+            implementation(compose.material3)
             implementation(libs.ktor.core)
             implementation(libs.kotlinx.coroutines.core)
             implementation(libs.ktor.client.content.negotiation)
