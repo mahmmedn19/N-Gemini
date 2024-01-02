@@ -1,7 +1,7 @@
 package ui.screens
 
 
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
@@ -10,11 +10,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalFocusManager
 import org.koin.mp.KoinPlatform
 import ui.compsoable.BottomFields
 import ui.compsoable.ChatMessageItem
 import ui.compsoable.CustomTopAppBar
-import ui.util.ImagePicker
 import ui.util.ImagePickerFactory
 import ui.util.getPlatformContext
 
@@ -32,9 +33,11 @@ fun ChatContent(
     chatUiState: ChatUiState, viewModel: ChatViewModel
 
 ) {
-
+    val focusManager = LocalFocusManager.current
     Scaffold(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier.pointerInput(Unit) {
+            detectTapGestures(onTap = { focusManager.clearFocus() })
+        },
         containerColor = MaterialTheme.colorScheme.primary,
         topBar = {
             CustomTopAppBar()
@@ -43,12 +46,10 @@ fun ChatContent(
             BottomFields(
                 modifier = Modifier.fillMaxWidth(),
                 chatUiState = chatUiState,
-                onSendClick = { message ->
-                    viewModel.generateContentWithText(message, null)
+                onSendClick = { message, images ->
+                    viewModel.generateContentWithText(message, images)
                 },
-                imagePicker = ImagePickerFactory(context = getPlatformContext()).createPicker{
-                    viewModel.generateContentWithText("Hi", it)
-                }
+                imagePicker = ImagePickerFactory(getPlatformContext()).createPicker()
             )
         },
         content = { paddingValues ->

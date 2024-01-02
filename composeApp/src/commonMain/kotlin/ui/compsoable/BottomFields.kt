@@ -32,20 +32,23 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ui.screens.ChatUiState
 import ui.util.ImagePicker
+import ui.util.getPlatformContext
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun BottomFields(
     modifier: Modifier = Modifier.fillMaxWidth(),
     chatUiState: ChatUiState,
-    onSendClick: (String) -> Unit,
+    onSendClick: (String, List<ByteArray>?) -> Unit,
     imagePicker: ImagePicker
 ) {
     var message by remember { mutableStateOf("") }
     val keyboardController = LocalSoftwareKeyboardController.current
     val focusManager = LocalFocusManager.current
     val images = remember { mutableStateListOf<ByteArray>() }
-
+    imagePicker.registerPicker{
+        images.addAll(it)
+    }
     OutlinedTextField(
         value = message,
         onValueChange = {
@@ -58,8 +61,8 @@ fun BottomFields(
         ),
         keyboardActions = KeyboardActions(
             onSend = {
-                if (message.isNotEmpty()) {
-                    onSendClick(message)
+                if (message.isNotEmpty()|| images.isNotEmpty()) {
+                    onSendClick(message, images)
                     message = ""
                     focusManager.clearFocus()
                     keyboardController?.hide()
@@ -83,16 +86,17 @@ fun BottomFields(
             Icon(
                 modifier = Modifier.size(36.dp)
                     .clickable {
-                        if (message.isNotEmpty()) {
-                            onSendClick(message)
+                        if (message.isNotEmpty() || images.isNotEmpty()) {
+                            onSendClick(message, images)
                             message = ""
+                            images.clear()
                             focusManager.clearFocus()
                             keyboardController?.hide()
                         }
                     },
                 imageVector = Icons.Default.Send,
                 contentDescription = "Send",
-                tint = if (message.isNotEmpty()) MaterialTheme.colors.primary else Color.Gray
+                tint = if (message.isNotEmpty()|| images.isNotEmpty()) MaterialTheme.colors.primary else Color.Gray
             )
         },
         textStyle = TextStyle(
@@ -109,9 +113,5 @@ fun BottomFields(
 
     )
     Spacer(modifier = Modifier.height(16.dp))
-
     ImageList(images = images)
-
-    imagePicker.registerPicker()
-
 }

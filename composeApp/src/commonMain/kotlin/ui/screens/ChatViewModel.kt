@@ -17,13 +17,13 @@ class ChatViewModel(
     private val _chatUiState = MutableStateFlow(ChatUiState())
     val chatUiState = _chatUiState.asStateFlow()
 
-    fun generateContentWithText(content: String, image: List<ByteArray>?=null) {
+    fun generateContentWithText(content: String, images: List<ByteArray>?=null) {
         viewModelScope.launch(Dispatchers.Unconfined) {
             addToMessages(content, emptyList(), Role.USER)
             try {
                 _chatUiState.value =
                     _chatUiState.value.copy(isLoading = true, isConnectionError = false)
-                val nGemini = getContentUseCase.getContentWithImage(content, image)
+                val nGemini = getContentUseCase.getContentWithImage(content, images)
                 val generatedContent =
                     nGemini.candidates?.get(0)?.content?.parts?.get(0)?.text.toString()
                 updateLastBotMessage(generatedContent)

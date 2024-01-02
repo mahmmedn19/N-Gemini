@@ -21,12 +21,11 @@ actual class PlatformContext(val androidContext: Context)
 actual fun getPlatformContext(): PlatformContext = PlatformContext(LocalContext.current)
 actual class ImagePicker(
     private val activity: ComponentActivity,
-    private val onImagePicked: (List<ByteArray>) -> Unit
 ) {
     private lateinit var getContent: ActivityResultLauncher<PickVisualMediaRequest>
 
     @Composable
-    actual fun registerPicker() {
+    actual fun registerPicker(onImagePicked: (List<ByteArray>) -> Unit) {
         getContent = rememberLauncherForActivityResult(
             contract = ActivityResultContracts.PickMultipleVisualMedia()
         ) { uris ->
@@ -49,14 +48,14 @@ actual class ImagePicker(
 
 
 actual class ImagePickerFactory actual constructor(context: PlatformContext) {
-
     @Composable
-    actual fun createPicker(onImagePicked: (List<ByteArray>) -> Unit): ImagePicker {
+    actual fun createPicker(): ImagePicker {
         val activity = LocalContext.current as ComponentActivity
         return remember(activity) {
-            ImagePicker(activity, onImagePicked)
+            ImagePicker(activity)
         }
     }
+
 }
 
 @Composable

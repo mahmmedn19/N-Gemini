@@ -5,8 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.ImageBitmap
 
 
-expect class PlatformContext {
-}
+expect class PlatformContext
 
 @Composable
 expect fun getPlatformContext(): PlatformContext
@@ -14,12 +13,12 @@ expect class ImagePicker {
     fun pickImages()
 
     @Composable
-    fun registerPicker()
+    fun registerPicker(onImagePicked: (List<ByteArray>) -> Unit)
 }
 
 expect class ImagePickerFactory(context: PlatformContext) {
     @Composable
-    fun createPicker(onImagePicked: (List<ByteArray>) -> Unit): ImagePicker
+    fun createPicker(): ImagePicker
 }
 
 @Composable

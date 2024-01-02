@@ -55,6 +55,7 @@ kotlin {
 
         androidMain.dependencies {
             implementation(libs.compose.ui.tooling.preview)
+            implementation(libs.compose.uitooling)
             implementation(libs.androidx.activity.compose)
             implementation(libs.kotlinx.coroutines.android)
             implementation(libs.ktor.client.okhttp)
@@ -62,7 +63,6 @@ kotlin {
             implementation(libs.koin.androidx.compose)
             implementation(libs.koin.android)
             implementation(libs.kstore.file)
-            implementation("androidx.activity:activity-compose:1.8.1")
 
         }
         commonMain.dependencies {

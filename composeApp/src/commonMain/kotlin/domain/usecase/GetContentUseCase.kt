@@ -6,7 +6,7 @@ import domain.repository.NGeminiRepository
 
 interface IGetContentUseCase {
     suspend fun getContentWithText(content: String): NGemini
-    suspend fun getContentWithImage(content: String, image: List<ByteArray>? = emptyList()): NGemini
+    suspend fun getContentWithImage(content: String, images: List<ByteArray>? = emptyList()): NGemini
 }
 
 class GetContentUseCase(private val nGeminiRepository: NGeminiRepository) : IGetContentUseCase {
@@ -14,11 +14,11 @@ class GetContentUseCase(private val nGeminiRepository: NGeminiRepository) : IGet
         nGeminiRepository.generateContent(content)
 
 
-    override suspend fun getContentWithImage(content: String, image: List<ByteArray>?): NGemini{
-        return if (image == null){
+    override suspend fun getContentWithImage(content: String, images: List<ByteArray>?): NGemini{
+        return if (images == null){
             nGeminiRepository.generateContent(content)
         } else{
-            nGeminiRepository.generateContentWithImage(content, image)
+            nGeminiRepository.generateContentWithImage(content, images)
         }
     }
 
