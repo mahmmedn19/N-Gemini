@@ -24,9 +24,10 @@ module.exports = {
   },
   devServer: {
     contentBase: path.resolve(__dirname, 'public'),
-    port: 8081, // Adjust the port as needed
+    port: 8082, // Adjust the port as needed
     host: '0.0.0.0', // This allows access from any IP address
     hot: true,
     open: true,
+    https: true,
   },
 };

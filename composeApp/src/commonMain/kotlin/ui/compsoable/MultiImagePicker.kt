@@ -10,10 +10,10 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import ui.util.rememberBitmapFromBytes
@@ -39,7 +39,7 @@ fun ImageList(
                         .padding(8.dp)
                         .fillMaxSize()
                         .border(
-                            border = BorderStroke(2.dp, color = Color.Unspecified)
+                            border = BorderStroke(1.dp, color = MaterialTheme.colorScheme.secondary),
                         )
                         .clip(RoundedCornerShape(8.dp)),
                     contentScale = ContentScale.Crop

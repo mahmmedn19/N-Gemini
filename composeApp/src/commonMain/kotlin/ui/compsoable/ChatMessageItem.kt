@@ -10,8 +10,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
@@ -44,8 +44,8 @@ fun ChatMessageItem(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(
-                            start = if (message.isModel) 64.dp else 8.dp,
-                            end = if (message.isModel) 8.dp else 64.dp
+                            start = if (message.isModel) 64.dp else 0.dp,
+                            end = if (message.isModel) 0.dp else 64.dp
                         ),
                     contentAlignment = if (message.isModel) Alignment.CenterEnd else Alignment.CenterStart,
                 ) {
@@ -59,11 +59,14 @@ fun ChatMessageItem(
                                     bottomEnd = if (message.isModel) 0.dp else 24.dp
                                 )
                             )
-                            .background(MaterialTheme.colors.secondary)
+                            .background(MaterialTheme.colorScheme.tertiaryContainer)
                             .padding(16.dp),
                         contentAlignment = if (message.isModel) Alignment.CenterEnd else Alignment.CenterStart
                     ) {
-                        Text(message.text.trim())
+                        Text(
+                            message.text.trim(),
+                            color = MaterialTheme.colorScheme.onTertiaryContainer,
+                        )
                     }
                 }
             }

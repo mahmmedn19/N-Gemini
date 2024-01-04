@@ -11,13 +11,13 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Attachment
 import androidx.compose.material.icons.filled.Send
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
@@ -53,7 +53,7 @@ fun BottomFields(
         images.addAll(it)
     }
     Box(
-        modifier = modifier.background(MaterialTheme.colors.background)
+        modifier = modifier
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -83,16 +83,19 @@ fun BottomFields(
                     }
                 ),
                 placeholder = {
-                    Text("Type a message")
+                    Text(
+                        text = "Message NGemini.....",
+                        color = MaterialTheme.colorScheme.onSecondaryContainer
+                    )
                 },
                 leadingIcon = {
                     Icon(
-                        modifier = Modifier.size(36.dp).clickable {
+                        modifier = Modifier.size(32.dp).clickable {
                             imagePicker.pickImages()
                         },
                         imageVector = Icons.Default.Attachment,
                         contentDescription = "Attachment",
-                        tint = MaterialTheme.colors.primary
+                        tint = MaterialTheme.colorScheme.primary
                     )
                 },
                 trailingIcon = {
@@ -101,7 +104,7 @@ fun BottomFields(
                         LoadingIcon(state = chatUiState.isLoading)
                     } else {
                         Icon(
-                            modifier = Modifier.size(36.dp)
+                            modifier = Modifier.size(32.dp)
                                 .clickable {
                                     if (message.isNotEmpty() || images.isNotEmpty()) {
                                         onSendClick(message, images)
@@ -113,20 +116,22 @@ fun BottomFields(
                                 },
                             imageVector = Icons.Default.Send,
                             contentDescription = "Send",
-                            tint = if (message.isNotEmpty() || images.isNotEmpty()) MaterialTheme.colors.primary else Color.Gray
+                            tint = if (message.isNotEmpty() || images.isNotEmpty()) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outline
                         )
                     }
                 },
                 textStyle = TextStyle(
                     fontSize = 18.sp,
-                    fontFamily = MaterialTheme.typography.h2.fontFamily,
+                    fontFamily = MaterialTheme.typography.bodyMedium.fontFamily,
                     color = Color.Black
                 ),
                 colors = TextFieldDefaults.outlinedTextFieldColors(
-                    focusedBorderColor = Color.Gray,
-                    unfocusedBorderColor = Color.Gray,
-                    focusedLabelColor = Color.Gray,
-                    unfocusedLabelColor = Color.Gray
+                    textColor = MaterialTheme.colorScheme.onSecondaryContainer,
+                    backgroundColor = MaterialTheme.colorScheme.secondaryContainer,
+                    focusedBorderColor = MaterialTheme.colorScheme.primary,
+                    unfocusedBorderColor = MaterialTheme.colorScheme.primary,
+                    focusedLabelColor = MaterialTheme.colorScheme.primary,
+                    unfocusedLabelColor = MaterialTheme.colorScheme.primary
                 ),
                 shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp)
             )

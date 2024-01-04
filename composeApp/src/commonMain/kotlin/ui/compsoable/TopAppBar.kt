@@ -1,7 +1,5 @@
 package ui.compsoable
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -22,22 +20,22 @@ fun NGeminiTopAppBar(
     modifier: Modifier = Modifier,
     title: String = "NGemini",
 ) {
-        TopAppBar(
-            modifier = modifier
-                .fillMaxWidth(),
-            scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(),
-            title = {
-                    Text(
-                        text = title,
-                        style = TextStyle(
-                            fontSize = 20.sp,
-                            fontWeight = FontWeight.ExtraBold,
-                            color = MaterialTheme.colorScheme.onPrimaryContainer,
-                        ),
-                    )
-            },
-            colors = TopAppBarDefaults.topAppBarColors(
-                containerColor = MaterialTheme.colorScheme.primaryContainer,
+    TopAppBar(
+        modifier = modifier
+            .fillMaxWidth(),
+        scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(),
+        title = {
+            Text(
+                text = title,
+                style = TextStyle(
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.ExtraBold,
+                    color = MaterialTheme.colorScheme.onSecondaryContainer,
+                ),
             )
+        },
+        colors = TopAppBarDefaults.topAppBarColors(
+            containerColor = MaterialTheme.colorScheme.secondaryContainer,
         )
+    )
 }
