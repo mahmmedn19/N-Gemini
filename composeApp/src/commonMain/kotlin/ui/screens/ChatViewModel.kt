@@ -1,7 +1,7 @@
 package ui.screens
 
-import data.models.ChatMessage
-import data.models.Role
+import domain.models.ChatMessage
+import domain.models.Role
 import dev.icerock.moko.mvvm.viewmodel.ViewModel
 import domain.usecase.IGetContentUseCase
 import kotlinx.coroutines.Dispatchers
@@ -17,9 +17,16 @@ class ChatViewModel(
     private val _chatUiState = MutableStateFlow(ChatUiState())
     val chatUiState = _chatUiState.asStateFlow()
 
-    fun generateContentWithText(content: String, images: List<ByteArray>?=null) {
+    fun generateContentWithText(content: String, images: List<ByteArray>? = null) {
         viewModelScope.launch(Dispatchers.Unconfined) {
-            addToMessages(content, emptyList(), Role.USER)
+                _chatUiState.value =
+                    _chatUiState.value.copy(
+                        isLoading = true,
+                        isConnectionError = false
+                    )
+            if (images != null) {
+                addToMessages(content, Role.USER, images)
+            }
             try {
                 _chatUiState.value =
                     _chatUiState.value.copy(isLoading = true, isConnectionError = false)
@@ -27,7 +34,11 @@ class ChatViewModel(
                 val generatedContent =
                     nGemini.candidates?.get(0)?.content?.parts?.get(0)?.text.toString()
                 updateLastBotMessage(generatedContent)
-                addToMessages(generatedContent, emptyList(), Role.MODEL)
+                addToMessages(
+                    generatedContent,
+                    Role.MODEL,
+                    emptyList()
+                ) // Pass empty list for images
                 _chatUiState.value =
                     _chatUiState.value.copy(isLoading = false, isConnectionError = false)
             } catch (e: Exception) {
@@ -58,18 +69,17 @@ class ChatViewModel(
         }
     }
 
+
     private fun addToMessages(
         text: String,
-        images: List<ByteArray>,
-        sender: Role
+        sender: Role,
+        images: List<ByteArray>
     ) {
         val newMessage = ChatMessage(text, images, sender.roleName)
-        val currentMessages = _chatUiState.value.message.toMutableList()
-
-        currentMessages.add(newMessage)
         _chatUiState.value = _chatUiState.value.copy(
-            message = currentMessages,
-            isLoading = true
+            message = _chatUiState.value.message + newMessage,
+            isLoading = true,
+            images = images  // Update images in the state
         )
     }
 

@@ -12,7 +12,6 @@ androidx-material = "1.10.0"
 androidx-test-junit = "1.1.5"
 compose-uitooling = "1.5.4"
 compose = "1.5.4"
-compose-compiler = "1.5.6"
 compose-plugin = "1.5.11"
 junit = "4.13.2"
 kamelImage = "0.9.1"
@@ -31,9 +30,9 @@ koin = "3.5.0"
 gson = "2.10.1"
 moko-mvvm = "0.16.1"
 toast4j = "0.2.0"
-buildkonfig = "0.13.3"
 kstore = "0.7.1"
 peekaboo = "0.3.3"
+buildkonfig = "0.15.1"
 
 [libraries]
 kamel-image = { module = "media.kamel:kamel-image", version.ref = "kamelImage" }
@@ -77,8 +76,6 @@ buildkonfig-gradle-plugin = { module = "com.codingfeline.buildkonfig:buildkonfig
 kstore = { module = "io.github.xxfast:kstore", version.ref = "kstore" }
 kstore-file = { module = "io.github.xxfast:kstore-file", version.ref = "kstore" }
 kstore-storage = { module = "io.github.xxfast:kstore-storage", version.ref = "kstore" }
-peekaboo-ui = { module = "io.github.team-preat:peekaboo-ui", version.ref = "peekaboo" }
-peekaboo-image-picker = { module = "io.github.team-preat:peekaboo-image-picker", version.ref = "peekaboo" }
 compose-uitooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "compose-uitooling" }
 
 
@@ -88,5 +85,6 @@ androidLibrary = { id = "com.android.library", version.ref = "agp" }
 jetbrainsCompose = { id = "org.jetbrains.compose", version.ref = "compose-plugin" }
 kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 buildConfig = { id = "com.github.gmazzo.buildconfig", version.ref = "buildConfig" }
+buildkonfig = { id = "com.codingfeline.buildkonfig", version.ref = "buildkonfig" }
 kotlinx-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }

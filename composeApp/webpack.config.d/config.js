@@ -1,15 +1,32 @@
+const path = require('path');
 const TerserPlugin = require("terser-webpack-plugin");
 
-config.optimization = config.optimization || {};
-config.optimization.minimize = true;
-config.optimization.minimizer = [
-    new TerserPlugin({
+module.exports = {
+  mode: 'development',
+  entry: './src/index.js',
+  output: {
+    filename: 'bundle.js',
+    path: path.resolve(__dirname, 'dist'),
+  },
+  optimization: {
+    minimize: true,
+    minimizer: [
+      new TerserPlugin({
         terserOptions: {
-            mangle: true,    // Note: By default, mangle is set to true.
-            compress: false, // Disable the transformations that reduce the code size.
-            output: {
-                beautify: false,
-            },
+          mangle: true,
+          compress: false,
+          output: {
+            beautify: false,
+          },
         },
-    }),
-];
+      }),
+    ],
+  },
+  devServer: {
+    contentBase: path.resolve(__dirname, 'public'),
+    port: 8081, // Adjust the port as needed
+    host: '0.0.0.0', // This allows access from any IP address
+    hot: true,
+    open: true,
+  },
+};

@@ -6,16 +6,4 @@ plugins {
     alias(libs.plugins.jetbrainsCompose) apply false
     alias(libs.plugins.kotlinMultiplatform) apply false
     alias(libs.plugins.jvm) apply false
-    id ("com.google.android.libraries.mapsplatform.secrets-gradle-plugin") version "2.0.1" apply false
-}
-buildscript {
-    repositories {
-        mavenCentral()
-        gradlePluginPortal()
-        google()
-    }
-
-/*    dependencies {
-        classpath(libs.buildkonfig.gradle.plugin)
-    }*/
 }

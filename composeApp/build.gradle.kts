@@ -1,8 +1,9 @@
 @file:OptIn(ExperimentalComposeLibrary::class)
 
-
+import com.codingfeline.buildkonfig.compiler.FieldSpec
 import org.jetbrains.compose.ExperimentalComposeLibrary
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
+import java.util.Properties
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
@@ -10,10 +11,7 @@ plugins {
     alias(libs.plugins.jetbrainsCompose)
     alias(libs.plugins.buildConfig)
     alias(libs.plugins.kotlinx.serialization)
-    id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
-    /*
-        id("com.codingfeline.buildkonfig")
-    */
+    alias(libs.plugins.buildkonfig)
 }
 
 kotlin {
@@ -40,13 +38,10 @@ kotlin {
     jvm("desktop")
 
     js(IR) {
-        moduleName = "composeApp"
-        browser {
-            commonWebpackConfig {
-                outputFileName = "composeApp.js"
-            }
-        }
+
+        nodejs()
         binaries.executable()
+
     }
 
 
@@ -96,11 +91,6 @@ kotlin {
             implementation(libs.kotlinx.coroutines.core)
             // Toaster for Windows
             implementation(libs.toast4j)
-
-            implementation("de.jangassen:jfa:1.2.0") {
-
-                exclude(group = "net.java.dev.jna", module = "jna")
-            }
             implementation(libs.kstore.file)
         }
 
@@ -114,9 +104,10 @@ android {
     namespace = "org.monaser.project"
     compileSdk = 34
 
-    sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
-    sourceSets["main"].res.srcDirs("src/androidMain/res")
-    sourceSets["main"].resources.srcDirs("src/commonMain/resources")
+    sourceSets["main"].apply {
+        manifest.srcFile("src/androidMain/AndroidManifest.xml")
+        res.srcDirs("src/androidMain/resources")
+    }
 
     defaultConfig {
         applicationId = "org.monaser.project"
@@ -125,22 +116,19 @@ android {
         versionCode = 1
         versionName = "1.0"
     }
-    packaging {
-        resources {
-            excludes += "/META-INF/{AL2.0,LGPL2.1}"
+    /*    packaging {
+            resources {
+                excludes += "/META-INF/{AL2.0,LGPL2.1}"
+            }
         }
-    }
-    buildTypes {
-        getByName("release") {
-            isMinifyEnabled = false
-        }
-    }
+        buildTypes {
+            getByName("release") {
+                isMinifyEnabled = false
+            }
+        }*/
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
-    }
-    dependencies {
-        debugImplementation(libs.compose.ui.tooling)
     }
     buildFeatures {
         compose = true
@@ -167,18 +155,28 @@ compose.desktop {
 compose.experimental {
     web.application {}
 }
+val localProperties = Properties()
+localProperties.load(rootProject.file("local.properties").reader())
 
-
-/*buildkonfig {
+buildkonfig {
     packageName = "org.monaser.project"
 
-    defaultConfigs {
-        val apiKey: String = gradleLocalProperties(rootDir).getProperty("NGEMINI_API_KEY")
-
-        require(apiKey.isNotEmpty()) {
-            "Register your api key from developer.nytimes.com and place it in local.properties as `apiKey`"
-        }
-
-        buildConfigField("NGEMINI_API_KEY", apiKey)
+    val props = Properties()
+    try {
+        props.load(file("../local.properties").inputStream())
+    } catch (e: Exception) {
     }
-}*/
+
+    defaultConfigs {
+        buildConfigField(
+            FieldSpec.Type.STRING,
+            "NGEMINI_API_KEY",
+            props["NGEMINI_API_KEY"]?.toString() ?: "abc"
+        )
+    }
+}
+/*
+tasks.getByPath("jvmProcessResources").dependsOn("libresGenerateResources")
+tasks.getByPath("jvmSourcesJar").dependsOn("libresGenerateResources")
+tasks.getByPath("jsProcessResources").dependsOn("libresGenerateResources")
+*/

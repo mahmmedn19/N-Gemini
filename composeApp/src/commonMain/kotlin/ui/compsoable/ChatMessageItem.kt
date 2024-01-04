@@ -3,6 +3,7 @@ package ui.compsoable
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -18,7 +19,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import ui.screens.ChatUiState
-import ui.util.ImagePicker
 
 @Composable
 fun ChatMessageItem(
@@ -35,28 +35,39 @@ fun ChatMessageItem(
         state = listState,
         modifier = modifier.fillMaxWidth(),
         contentPadding = PaddingValues(8.dp),
-        verticalArrangement = Arrangement.spacedBy(4.dp)
+        verticalArrangement = Arrangement.spacedBy(12.dp),
     ) {
         items(chatUiState.message.size) {
             val message = chatUiState.message[it]
             if (message != null) {
                 Box(
-                    contentAlignment = if (message.isModel) Alignment.CenterEnd else Alignment.CenterStart,
                     modifier = Modifier
-                        .clip(
-                            RoundedCornerShape(
-                                topStart = 24f,
-                                topEnd = 24f,
-                                bottomStart = if (message.isModel) 24f else 0f,
-                                bottomEnd = if (message.isModel) 0f else 24f
-                            )
-                        )
-                        .background(MaterialTheme.colors.secondary)
-                        .padding(16.dp)
+                        .fillMaxWidth()
+                        .padding(
+                            start = if (message.isModel) 64.dp else 8.dp,
+                            end = if (message.isModel) 8.dp else 64.dp
+                        ),
+                    contentAlignment = if (message.isModel) Alignment.CenterEnd else Alignment.CenterStart,
                 ) {
-                    Text(message.text.trim())
+                    Box(
+                        modifier = Modifier
+                            .clip(
+                                RoundedCornerShape(
+                                    topStart = 24.dp,
+                                    topEnd = 24.dp,
+                                    bottomStart = if (message.isModel) 24.dp else 0.dp,
+                                    bottomEnd = if (message.isModel) 0.dp else 24.dp
+                                )
+                            )
+                            .background(MaterialTheme.colors.secondary)
+                            .padding(16.dp),
+                        contentAlignment = if (message.isModel) Alignment.CenterEnd else Alignment.CenterStart
+                    ) {
+                        Text(message.text.trim())
+                    }
                 }
             }
         }
     }
 }
+
