@@ -10,12 +10,13 @@ androidx-core-ktx = "1.12.0"
 androidx-espresso-core = "3.5.1"
 androidx-material = "1.10.0"
 androidx-test-junit = "1.1.5"
+compose-uitooling = "1.5.4"
 compose = "1.5.4"
-compose-compiler = "1.5.6"
-compose-plugin = "1.6.0-alpha01"
+compose-plugin = "1.5.11"
 junit = "4.13.2"
+kamelImage = "0.9.1"
 koinAndroidxCompose = "3.4.4"
-kotlin = "2.0.0-Beta1"
+kotlin = "1.9.21"
 material = "1.5.0"
 voyager = "1.0.0"
 composeImageLoader = "1.7.1"
@@ -29,10 +30,12 @@ koin = "3.5.0"
 gson = "2.10.1"
 moko-mvvm = "0.16.1"
 toast4j = "0.2.0"
-buildkonfig = "0.13.3"
 kstore = "0.7.1"
+peekaboo = "0.3.3"
+buildkonfig = "0.15.1"
 
 [libraries]
+kamel-image = { module = "media.kamel:kamel-image", version.ref = "kamelImage" }
 koin-android = { module = "io.insert-koin:koin-android", version.ref = "koin" }
 koin-androidx-compose = { module = "io.insert-koin:koin-androidx-compose", version.ref = "koinAndroidxCompose" }
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
@@ -73,6 +76,7 @@ buildkonfig-gradle-plugin = { module = "com.codingfeline.buildkonfig:buildkonfig
 kstore = { module = "io.github.xxfast:kstore", version.ref = "kstore" }
 kstore-file = { module = "io.github.xxfast:kstore-file", version.ref = "kstore" }
 kstore-storage = { module = "io.github.xxfast:kstore-storage", version.ref = "kstore" }
+compose-uitooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "compose-uitooling" }
 
 
 [plugins]
@@ -81,5 +85,6 @@ androidLibrary = { id = "com.android.library", version.ref = "agp" }
 jetbrainsCompose = { id = "org.jetbrains.compose", version.ref = "compose-plugin" }
 kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 buildConfig = { id = "com.github.gmazzo.buildconfig", version.ref = "buildConfig" }
+buildkonfig = { id = "com.codingfeline.buildkonfig", version.ref = "buildkonfig" }
 kotlinx-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }

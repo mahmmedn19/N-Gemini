@@ -1,9 +1,9 @@
-@file:OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
+@file:OptIn(ExperimentalComposeLibrary::class)
 
-import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
-import com.codingfeline.buildkonfig.compiler.FieldSpec.Type.STRING
+import com.codingfeline.buildkonfig.compiler.FieldSpec
 import org.jetbrains.compose.ExperimentalComposeLibrary
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
+import java.util.Properties
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
@@ -11,7 +11,7 @@ plugins {
     alias(libs.plugins.jetbrainsCompose)
     alias(libs.plugins.buildConfig)
     alias(libs.plugins.kotlinx.serialization)
-    id("com.codingfeline.buildkonfig")
+    alias(libs.plugins.buildkonfig)
 }
 
 kotlin {
@@ -37,15 +37,11 @@ kotlin {
 
     jvm("desktop")
 
-    js(IR) {
-        moduleName = "composeApp"
-        browser {
-            commonWebpackConfig {
-                outputFileName = "composeApp.js"
-            }
-        }
+    js {
+        browser()
         binaries.executable()
     }
+
 
 
     sourceSets {
@@ -53,6 +49,7 @@ kotlin {
 
         androidMain.dependencies {
             implementation(libs.compose.ui.tooling.preview)
+            implementation(libs.compose.uitooling)
             implementation(libs.androidx.activity.compose)
             implementation(libs.kotlinx.coroutines.android)
             implementation(libs.ktor.client.okhttp)
@@ -70,6 +67,7 @@ kotlin {
             @OptIn(ExperimentalComposeLibrary::class)
             implementation(compose.components.resources)
             implementation(compose.materialIconsExtended)
+            implementation(compose.material3)
             implementation(libs.ktor.core)
             implementation(libs.kotlinx.coroutines.core)
             implementation(libs.ktor.client.content.negotiation)
@@ -92,11 +90,6 @@ kotlin {
             implementation(libs.kotlinx.coroutines.core)
             // Toaster for Windows
             implementation(libs.toast4j)
-
-            implementation("de.jangassen:jfa:1.2.0") {
-
-                exclude(group = "net.java.dev.jna", module = "jna")
-            }
             implementation(libs.kstore.file)
         }
 
@@ -110,9 +103,10 @@ android {
     namespace = "org.monaser.project"
     compileSdk = 34
 
-    sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
-    sourceSets["main"].res.srcDirs("src/androidMain/res")
-    sourceSets["main"].resources.srcDirs("src/commonMain/resources")
+    sourceSets["main"].apply {
+        manifest.srcFile("src/androidMain/AndroidManifest.xml")
+        res.srcDirs("src/androidMain/resources")
+    }
 
     defaultConfig {
         applicationId = "org.monaser.project"
@@ -121,25 +115,23 @@ android {
         versionCode = 1
         versionName = "1.0"
     }
-    packaging {
-        resources {
-            excludes += "/META-INF/{AL2.0,LGPL2.1}"
+    /*    packaging {
+            resources {
+                excludes += "/META-INF/{AL2.0,LGPL2.1}"
+            }
         }
-    }
-    buildTypes {
-        getByName("release") {
-            isMinifyEnabled = false
-        }
-    }
+        buildTypes {
+            getByName("release") {
+                isMinifyEnabled = false
+            }
+        }*/
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
-    dependencies {
-        debugImplementation(libs.compose.ui.tooling)
-    }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.4"
@@ -162,16 +154,28 @@ compose.desktop {
 compose.experimental {
     web.application {}
 }
+val localProperties = Properties()
+localProperties.load(rootProject.file("local.properties").reader())
+
 buildkonfig {
     packageName = "org.monaser.project"
 
+    val props = Properties()
+    try {
+        props.load(file("../local.properties").inputStream())
+    } catch (e: Exception) {
+    }
+
     defaultConfigs {
-        val apiKey: String = gradleLocalProperties(rootDir).getProperty("NGEMINI_API_KEY")
-
-        require(apiKey.isNotEmpty()) {
-            "Register your api key from developer.nytimes.com and place it in local.properties as `apiKey`"
-        }
-
-        buildConfigField(STRING, "NGEMINI_API_KEY", apiKey)
+        buildConfigField(
+            FieldSpec.Type.STRING,
+            "NGEMINI_API_KEY",
+            props["NGEMINI_API_KEY"]?.toString() ?: "abc"
+        )
     }
 }
+/*
+tasks.getByPath("jvmProcessResources").dependsOn("libresGenerateResources")
+tasks.getByPath("jvmSourcesJar").dependsOn("libresGenerateResources")
+tasks.getByPath("jsProcessResources").dependsOn("libresGenerateResources")
+*/
