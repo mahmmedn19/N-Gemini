@@ -1,8 +1,8 @@
 package ui.screens
 
+import dev.icerock.moko.mvvm.viewmodel.ViewModel
 import domain.models.ChatMessage
 import domain.models.Role
-import dev.icerock.moko.mvvm.viewmodel.ViewModel
 import domain.usecase.IGetContentUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
@@ -19,11 +19,11 @@ class ChatViewModel(
 
     fun generateContentWithText(content: String, images: List<ByteArray>? = null) {
         viewModelScope.launch(Dispatchers.Unconfined) {
-                _chatUiState.value =
-                    _chatUiState.value.copy(
-                        isLoading = true,
-                        isConnectionError = false
-                    )
+            _chatUiState.value =
+                _chatUiState.value.copy(
+                    isLoading = true,
+                    isConnectionError = false
+                )
             if (images != null) {
                 addToMessages(content, Role.USER, images)
             }
@@ -38,9 +38,9 @@ class ChatViewModel(
                     generatedContent,
                     Role.MODEL,
                     emptyList()
-                ) // Pass empty list for images
+                )
                 _chatUiState.value =
-                    _chatUiState.value.copy(isLoading = false, isConnectionError = false)
+                    _chatUiState.value.copy(isLoading = false)
             } catch (e: Exception) {
                 handleContentGenerationError()
             }
@@ -79,7 +79,7 @@ class ChatViewModel(
         _chatUiState.value = _chatUiState.value.copy(
             message = _chatUiState.value.message + newMessage,
             isLoading = true,
-            images = images  // Update images in the state
+            images = images
         )
     }
 

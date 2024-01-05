@@ -1,7 +1,11 @@
 package ui.theme
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.ContentAlpha
+import androidx.compose.material.LocalContentAlpha
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Shapes
 import androidx.compose.material3.Surface
@@ -13,6 +17,7 @@ import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
 private val LightColors = lightColorScheme(
@@ -87,24 +92,25 @@ private val AppShapes = Shapes(
     extraLarge = RoundedCornerShape(32.dp)
 )
 
-internal val LocalThemeIsDark = compositionLocalOf { mutableStateOf(true) }
 
 @Composable
 internal fun AppTheme(
     content: @Composable() () -> Unit
 ) {
-    val systemIsDark = isSystemInDarkTheme()
-    val isDarkState = remember { mutableStateOf(systemIsDark) }
+    val isSystemDarkTheme = isSystemInDarkTheme()
+
     CompositionLocalProvider(
-        LocalThemeIsDark provides isDarkState
+        LocalContentAlpha provides if (isSystemDarkTheme) ContentAlpha.high else ContentAlpha.medium,
+        LocalContentColor provides if (isSystemDarkTheme) md_theme_light_onBackground else md_theme_dark_onBackground,
     ) {
-        val isDark by isDarkState
-        SystemAppearance(!isDark)
+        SystemAppearance(!isSystemDarkTheme)
         MaterialTheme(
-            colorScheme = if (isDark) DarkColors else LightColors,
+            colorScheme = if (isSystemDarkTheme) DarkColors else LightColors,
             shapes = AppShapes,
             content = {
-                Surface(content = content)
+                Surface(
+                    content = content
+                )
             }
         )
     }

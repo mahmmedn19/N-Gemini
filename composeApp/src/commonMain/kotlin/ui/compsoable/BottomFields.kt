@@ -1,6 +1,5 @@
 package ui.compsoable
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -32,6 +31,7 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ui.screens.ChatUiState
@@ -85,7 +85,9 @@ fun BottomFields(
                 placeholder = {
                     Text(
                         text = "Message NGemini.....",
-                        color = MaterialTheme.colorScheme.onSecondaryContainer
+                        color = MaterialTheme.colorScheme.outline,
+                        maxLines = 2,
+                        overflow = TextOverflow.Ellipsis
                     )
                 },
                 leadingIcon = {
@@ -122,8 +124,8 @@ fun BottomFields(
                 },
                 textStyle = TextStyle(
                     fontSize = 18.sp,
-                    fontFamily = MaterialTheme.typography.bodyMedium.fontFamily,
-                    color = Color.Black
+                    fontFamily = MaterialTheme.typography.labelLarge.fontFamily,
+                    color = MaterialTheme.colorScheme.onSecondaryContainer
                 ),
                 colors = TextFieldDefaults.outlinedTextFieldColors(
                     textColor = MaterialTheme.colorScheme.onSecondaryContainer,
@@ -133,7 +135,7 @@ fun BottomFields(
                     focusedLabelColor = MaterialTheme.colorScheme.primary,
                     unfocusedLabelColor = MaterialTheme.colorScheme.primary
                 ),
-                shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp)
+                shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),
             )
         }
     }
