@@ -1,0 +1,38 @@
+{
+  "name": "ngemini",
+  "version": "1.0.0",
+  "description": "This is a Kotlin Multiplatform project targeting Android, Web, Desktop.",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "watch": "webpack --watch",
+    "start": "webpack serve --open",
+    "server": "node server.js",
+    "build": "webpack"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mahmmedn19/N-Gemini.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "express": "^4.17.1",
+    "html-webpack-plugin": "^4.5.0",
+    "webpack": "^5.4.0",
+    "webpack-cli": "^4.2.0",
+    "webpack-dev-middleware": "^4.0.2",
+    "webpack-dev-server": "^3.11.0"
+  },
+  "dependencies": {
+    "lodash": "^4.17.20"
+  },
+  "bugs": {
+    "url": "https://github.com/mahmmedn19/N-Gemini/issues"
+  },
+  "homepage": "https://github.com/mahmmedn19/N-Gemini#readme"
+}

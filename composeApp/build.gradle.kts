@@ -37,14 +37,11 @@ kotlin {
 
     jvm("desktop")
 
-    js(IR) {
-
-        browser{
-
-        }
+    js {
+        browser()
         binaries.executable()
-
     }
+
 
 
     sourceSets {
