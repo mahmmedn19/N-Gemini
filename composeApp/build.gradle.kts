@@ -1,89 +1,126 @@
+@file:OptIn(ExperimentalComposeLibrary::class)
+
+import com.codingfeline.buildkonfig.compiler.FieldSpec
 import org.jetbrains.compose.ExperimentalComposeLibrary
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
-import org.jetbrains.kotlin.gradle.targets.js.dsl.ExperimentalWasmDsl
+import java.util.Properties
 
 plugins {
-    alias(libs.plugins.kotlinMultiplatform)
-    alias(libs.plugins.androidApplication)
-    alias(libs.plugins.jetbrainsCompose)
+    alias(libs.plugins.multiplatform)
+    alias(libs.plugins.compose)
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.libres)
+    alias(libs.plugins.kotlinx.serialization)
+    alias(libs.plugins.buildkonfig)
 }
 
 kotlin {
-    @OptIn(ExperimentalWasmDsl::class)
-    wasmJs {
-        moduleName = "composeApp"
-        browser {
-            commonWebpackConfig {
-                outputFileName = "composeApp.js"
-            }
-        }
-        binaries.executable()
-    }
-    
+
+
     androidTarget {
         compilations.all {
             kotlinOptions {
-                jvmTarget = "1.8"
+                jvmTarget = "17"
             }
         }
     }
-    
-    jvm("desktop")
-    
+
+    jvm()
+
+    js(IR) {
+        browser()
+        binaries.executable()
+    }
+
+
+
     sourceSets {
-        val desktopMain by getting
-        
+
         androidMain.dependencies {
-            implementation(libs.compose.ui.tooling.preview)
-            implementation(libs.androidx.activity.compose)
+            implementation(libs.androidx.appcompat)
+            implementation(libs.androidx.activityCompose)
+            implementation(libs.compose.uitooling)
+            implementation(libs.kotlinx.coroutines.android)
+            implementation(libs.ktor.client.okhttp)
+            implementation(libs.ktor.core)
+            implementation(libs.koin.androidx.compose)
+            implementation(libs.koin.android)
+            implementation(libs.kstore.file)
+
         }
         commonMain.dependencies {
             implementation(compose.runtime)
+            implementation(compose.material3)
             implementation(compose.foundation)
             implementation(compose.material)
             implementation(compose.ui)
             @OptIn(ExperimentalComposeLibrary::class)
             implementation(compose.components.resources)
+            implementation(compose.materialIconsExtended)
+            implementation(libs.libres)
+            implementation(libs.voyager.navigator)
+            implementation(libs.kamel.image)
+            implementation(libs.kotlinx.coroutines.core)
+            implementation(libs.moko.mvvm)
+            implementation(libs.ktor.core)
+            implementation(libs.contentNegotiation)
+            implementation(libs.serializationKotlinxJson)
+            implementation(libs.composeIcons.featherIcons)
+            implementation(libs.kotlinx.serialization.json)
+            implementation(libs.kotlinx.datetime)
+            implementation(libs.multiplatformSettings)
+            implementation(libs.ktor.client.content.negotiation)
+            implementation(libs.ktor.client.logging)
+            implementation(libs.io.ktor.ktor.client.serialization)
+            implementation(libs.kotlinx.serialization.json)
+            implementation(libs.koin.core)
+            implementation(libs.com.google.code.gson)
+            implementation(libs.mvvm.flow.compose)
+            implementation(libs.kstore)
+
         }
-        desktopMain.dependencies {
+        jvmMain.dependencies {
+            implementation(compose.desktop.common)
             implementation(compose.desktop.currentOs)
+            implementation(libs.ktor.client.okhttp)
+            implementation(libs.kotlinx.coroutines.swing)
+            implementation(libs.toast4j)
+        }
+
+        jsMain.dependencies {
+            implementation(compose.html.core)
         }
     }
 }
 
 android {
     namespace = "org.monaser.project"
-    compileSdk = libs.versions.android.compileSdk.get().toInt()
+    compileSdk = 34
 
-    sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
-    sourceSets["main"].res.srcDirs("src/androidMain/res")
-    sourceSets["main"].resources.srcDirs("src/commonMain/resources")
+    sourceSets["main"].apply {
+        manifest.srcFile("src/androidMain/AndroidManifest.xml")
+        res.srcDirs("src/androidMain/resources")
+    }
 
     defaultConfig {
         applicationId = "org.monaser.project"
-        minSdk = libs.versions.android.minSdk.get().toInt()
-        targetSdk = libs.versions.android.targetSdk.get().toInt()
+        minSdk = 24
+        targetSdk = 34
         versionCode = 1
         versionName = "1.0"
     }
-    packaging {
-        resources {
-            excludes += "/META-INF/{AL2.0,LGPL2.1}"
-        }
-    }
-    buildTypes {
-        getByName("release") {
-            isMinifyEnabled = false
-        }
-    }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
-    dependencies {
-        debugImplementation(libs.compose.ui.tooling)
+    buildFeatures {
+        compose = true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.5.4"
     }
 }
+
 
 compose.desktop {
     application {
@@ -100,3 +137,28 @@ compose.desktop {
 compose.experimental {
     web.application {}
 }
+val localProperties = Properties()
+localProperties.load(rootProject.file("local.properties").reader())
+
+buildkonfig {
+    packageName = "org.monaser.project"
+
+    val props = Properties()
+    try {
+        props.load(file("../local.properties").inputStream())
+    } catch (e: Exception) {
+    }
+
+    defaultConfigs {
+        buildConfigField(
+                FieldSpec.Type.STRING,
+                "NGEMINI_API_KEY",
+                props["NGEMINI_API_KEY"]?.toString() ?: "abc"
+        )
+    }
+}
+libres {
+}
+tasks.getByPath("jvmProcessResources").dependsOn("libresGenerateResources")
+tasks.getByPath("jvmSourcesJar").dependsOn("libresGenerateResources")
+tasks.getByPath("jsProcessResources").dependsOn("libresGenerateResources")
