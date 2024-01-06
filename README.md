@@ -11,13 +11,14 @@ https://github.com/mahmmedn19/N-Gemini/assets/100851080/98dbd815-86e2-4837-a59f-
 The `/composeApp` directory contains code shared across Compose Multiplatform applications, organized into the following subfolders:
 
 - `commonMain`: Code common to all platforms.
-- `jvmMain`, `androidMain`, `jsMain`: Platform-specific code for Desktop, Android, and Web, respectively.
+- `jvmMain`, `androidMain`, `jsMain`
 
 ## 📱 Supported Platforms
 
 This project supports the following platforms:
 
 - Android
+- iOS ( will be added in the future)
 - Desktop (Linux, macOS, Windows)
 - Web
 
