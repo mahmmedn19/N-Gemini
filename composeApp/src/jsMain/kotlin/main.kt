@@ -5,6 +5,9 @@ import org.jetbrains.skiko.wasm.onWasmReady
 @OptIn(ExperimentalComposeUiApi::class)
 fun main() {
     onWasmReady {
-        CanvasBasedWindow(canvasElementId = "NGemini") { App() }
+        initKoin()
+        CanvasBasedWindow("NGemini") {
+            App()
+        }
     }
 }

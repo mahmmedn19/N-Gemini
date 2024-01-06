@@ -1,5 +1,3 @@
-// Web module
-
 package ui.util
 
 import androidx.compose.runtime.Composable

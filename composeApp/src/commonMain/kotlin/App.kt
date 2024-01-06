@@ -3,7 +3,7 @@ import ui.screens.ChatScreen
 import ui.theme.AppTheme
 
 @Composable
-fun App() {
+internal fun App() {
     AppTheme {
         ChatScreen()
     }

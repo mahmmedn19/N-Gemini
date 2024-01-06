@@ -40,10 +40,10 @@ import ui.util.ImagePicker
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun BottomFields(
-    modifier: Modifier = Modifier.fillMaxWidth(),
-    chatUiState: ChatUiState,
-    onSendClick: (String, List<ByteArray>?) -> Unit,
-    imagePicker: ImagePicker
+        modifier: Modifier = Modifier.fillMaxWidth(),
+        chatUiState: ChatUiState,
+        onSendClick: (String, List<ByteArray>?) -> Unit,
+        imagePicker: ImagePicker
 ) {
     var message by remember { mutableStateOf("") }
     val keyboardController = LocalSoftwareKeyboardController.current
@@ -53,89 +53,89 @@ fun BottomFields(
         images.addAll(it)
     }
     Box(
-        modifier = modifier
+            modifier = modifier
     ) {
         Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
         ) {
             ImageList(
-                images = images,
+                    images = images,
             )
             OutlinedTextField(
-                value = message,
-                onValueChange = {
-                    message = it
-                },
-                modifier = modifier
-                    .fillMaxWidth(),
-                keyboardOptions = KeyboardOptions.Default.copy(
-                    imeAction = ImeAction.Send
-                ),
-                keyboardActions = KeyboardActions(
-                    onSend = {
-                        if (message.isNotEmpty() || images.isNotEmpty()) {
-                            onSendClick(message, images)
-                            message = ""
-                            focusManager.clearFocus()
-                            keyboardController?.hide()
-                        }
-                    }
-                ),
-                placeholder = {
-                    Text(
-                        text = "Message NGemini.....",
-                        color = MaterialTheme.colorScheme.outline,
-                        maxLines = 2,
-                        overflow = TextOverflow.Ellipsis
-                    )
-                },
-                leadingIcon = {
-                    Icon(
-                        modifier = Modifier.size(32.dp).clickable {
-                            imagePicker.pickImages()
-                        },
-                        imageVector = Icons.Default.Attachment,
-                        contentDescription = "Attachment",
-                        tint = MaterialTheme.colorScheme.primary
-                    )
-                },
-                trailingIcon = {
-
-                    if (chatUiState.isLoading) {
-                        LoadingIcon(state = chatUiState.isLoading)
-                    } else {
-                        Icon(
-                            modifier = Modifier.size(32.dp)
-                                .clickable {
-                                    if (message.isNotEmpty() || images.isNotEmpty()) {
-                                        onSendClick(message, images)
-                                        message = ""
-                                        images.clear()
-                                        focusManager.clearFocus()
-                                        keyboardController?.hide()
-                                    }
-                                },
-                            imageVector = Icons.Default.Send,
-                            contentDescription = "Send",
-                            tint = if (message.isNotEmpty() || images.isNotEmpty()) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outline
+                    value = message,
+                    onValueChange = {
+                        message = it
+                    },
+                    modifier = modifier
+                            .fillMaxWidth(),
+                    keyboardOptions = KeyboardOptions.Default.copy(
+                            imeAction = ImeAction.Send
+                    ),
+                    keyboardActions = KeyboardActions(
+                            onSend = {
+                                if (message.isNotEmpty() || images.isNotEmpty()) {
+                                    onSendClick(message, images)
+                                    message = ""
+                                    focusManager.clearFocus()
+                                    keyboardController?.hide()
+                                }
+                            }
+                    ),
+                    placeholder = {
+                        Text(
+                                text = "Message NGemini.....",
+                                color = MaterialTheme.colorScheme.outline,
+                                maxLines = 2,
+                                overflow = TextOverflow.Ellipsis
                         )
-                    }
-                },
-                textStyle = TextStyle(
-                    fontSize = 18.sp,
-                    fontFamily = MaterialTheme.typography.labelLarge.fontFamily,
-                    color = MaterialTheme.colorScheme.onSecondaryContainer
-                ),
-                colors = TextFieldDefaults.outlinedTextFieldColors(
-                    textColor = MaterialTheme.colorScheme.onSecondaryContainer,
-                    backgroundColor = MaterialTheme.colorScheme.secondaryContainer,
-                    focusedBorderColor = MaterialTheme.colorScheme.primary,
-                    unfocusedBorderColor = MaterialTheme.colorScheme.primary,
-                    focusedLabelColor = MaterialTheme.colorScheme.primary,
-                    unfocusedLabelColor = MaterialTheme.colorScheme.primary
-                ),
-                shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),
+                    },
+                    leadingIcon = {
+                        Icon(
+                                modifier = Modifier.size(32.dp).clickable {
+                                    imagePicker.pickImages()
+                                },
+                                imageVector = Icons.Default.Attachment,
+                                contentDescription = "Attachment",
+                                tint = MaterialTheme.colorScheme.primary
+                        )
+                    },
+                    trailingIcon = {
+
+                        if (chatUiState.isLoading) {
+                            LoadingIcon(state = chatUiState.isLoading)
+                        } else {
+                            Icon(
+                                    modifier = Modifier.size(32.dp)
+                                            .clickable {
+                                                if (message.isNotEmpty() || images.isNotEmpty()) {
+                                                    onSendClick(message, images)
+                                                    message = ""
+                                                    images.clear()
+                                                    focusManager.clearFocus()
+                                                    keyboardController?.hide()
+                                                }
+                                            },
+                                    imageVector = Icons.Default.Send,
+                                    contentDescription = "Send",
+                                    tint = if (message.isNotEmpty() || images.isNotEmpty()) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outline
+                            )
+                        }
+                    },
+                    textStyle = TextStyle(
+                            fontSize = 18.sp,
+                            fontFamily = MaterialTheme.typography.labelLarge.fontFamily,
+                            color = MaterialTheme.colorScheme.onSecondaryContainer
+                    ),
+                    colors = TextFieldDefaults.outlinedTextFieldColors(
+                            textColor = MaterialTheme.colorScheme.onSecondaryContainer,
+                            backgroundColor = MaterialTheme.colorScheme.secondaryContainer,
+                            focusedBorderColor = MaterialTheme.colorScheme.primary,
+                            unfocusedBorderColor = MaterialTheme.colorScheme.primary,
+                            focusedLabelColor = MaterialTheme.colorScheme.primary,
+                            unfocusedLabelColor = MaterialTheme.colorScheme.primary
+                    ),
+                    shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),
             )
         }
     }

@@ -6,25 +6,15 @@ import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import java.util.Properties
 
 plugins {
-    alias(libs.plugins.kotlinMultiplatform)
-    alias(libs.plugins.androidApplication)
-    alias(libs.plugins.jetbrainsCompose)
-    alias(libs.plugins.buildConfig)
+    alias(libs.plugins.multiplatform)
+    alias(libs.plugins.compose)
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.libres)
     alias(libs.plugins.kotlinx.serialization)
     alias(libs.plugins.buildkonfig)
 }
 
 kotlin {
-/*    @OptIn(ExperimentalWasmDsl::class)
-    wasmJs {
-        moduleName = "composeApp"
-        browser {
-            commonWebpackConfig {
-                outputFileName = "composeApp.js"
-            }
-        }
-        binaries.executable()
-    }*/
 
 
     androidTarget {
@@ -35,9 +25,9 @@ kotlin {
         }
     }
 
-    jvm("desktop")
+    jvm()
 
-    js {
+    js(IR) {
         browser()
         binaries.executable()
     }
@@ -45,12 +35,11 @@ kotlin {
 
 
     sourceSets {
-        val desktopMain by getting
 
         androidMain.dependencies {
-            implementation(libs.compose.ui.tooling.preview)
+            implementation(libs.androidx.appcompat)
+            implementation(libs.androidx.activityCompose)
             implementation(libs.compose.uitooling)
-            implementation(libs.androidx.activity.compose)
             implementation(libs.kotlinx.coroutines.android)
             implementation(libs.ktor.client.okhttp)
             implementation(libs.ktor.core)
@@ -61,36 +50,41 @@ kotlin {
         }
         commonMain.dependencies {
             implementation(compose.runtime)
+            implementation(compose.material3)
             implementation(compose.foundation)
             implementation(compose.material)
             implementation(compose.ui)
             @OptIn(ExperimentalComposeLibrary::class)
             implementation(compose.components.resources)
             implementation(compose.materialIconsExtended)
-            implementation(compose.material3)
-            implementation(libs.ktor.core)
+            implementation(libs.libres)
+            implementation(libs.voyager.navigator)
+            implementation(libs.kamel.image)
             implementation(libs.kotlinx.coroutines.core)
+            implementation(libs.moko.mvvm)
+            implementation(libs.ktor.core)
+            implementation(libs.contentNegotiation)
+            implementation(libs.serializationKotlinxJson)
+            implementation(libs.composeIcons.featherIcons)
+            implementation(libs.kotlinx.serialization.json)
+            implementation(libs.kotlinx.datetime)
+            implementation(libs.multiplatformSettings)
             implementation(libs.ktor.client.content.negotiation)
             implementation(libs.ktor.client.logging)
             implementation(libs.io.ktor.ktor.client.serialization)
             implementation(libs.kotlinx.serialization.json)
             implementation(libs.koin.core)
-            implementation(libs.composeIcons.featherIcons)
             implementation(libs.com.google.code.gson)
-            implementation(libs.moko.mvvm)
             implementation(libs.mvvm.flow.compose)
-            implementation(libs.material.v150)
             implementation(libs.kstore)
 
         }
-        desktopMain.dependencies {
-            implementation(compose.desktop.currentOs)
+        jvmMain.dependencies {
             implementation(compose.desktop.common)
+            implementation(compose.desktop.currentOs)
             implementation(libs.ktor.client.okhttp)
-            implementation(libs.kotlinx.coroutines.core)
-            // Toaster for Windows
+            implementation(libs.kotlinx.coroutines.swing)
             implementation(libs.toast4j)
-            implementation(libs.kstore.file)
         }
 
         jsMain.dependencies {
@@ -115,23 +109,12 @@ android {
         versionCode = 1
         versionName = "1.0"
     }
-    /*    packaging {
-            resources {
-                excludes += "/META-INF/{AL2.0,LGPL2.1}"
-            }
-        }
-        buildTypes {
-            getByName("release") {
-                isMinifyEnabled = false
-            }
-        }*/
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
     buildFeatures {
         compose = true
-        buildConfig = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.4"
@@ -168,14 +151,14 @@ buildkonfig {
 
     defaultConfigs {
         buildConfigField(
-            FieldSpec.Type.STRING,
-            "NGEMINI_API_KEY",
-            props["NGEMINI_API_KEY"]?.toString() ?: "abc"
+                FieldSpec.Type.STRING,
+                "NGEMINI_API_KEY",
+                props["NGEMINI_API_KEY"]?.toString() ?: "abc"
         )
     }
 }
-/*
+libres {
+}
 tasks.getByPath("jvmProcessResources").dependsOn("libresGenerateResources")
 tasks.getByPath("jvmSourcesJar").dependsOn("libresGenerateResources")
 tasks.getByPath("jsProcessResources").dependsOn("libresGenerateResources")
-*/
